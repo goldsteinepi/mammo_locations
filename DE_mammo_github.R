@@ -1,6 +1,6 @@
 #################
 # Delaware mammography screening
-# Citation: Webster JL, Goldstein ND, Rowland JR, Siegel SD. A Catchment and Location-Allocation Analysis of Mammography Access in Delaware, US: Implications for disparities in geographic access to breast cancer screening. Manuscript in preparation.
+# Citation: Webster JL, Goldstein ND, Rowland JP, Tuite CM, Siegel SD. A Catchment and Location-Allocation Analysis of Mammography Access in Delaware, US: Implications for disparities in geographic access to breast cancer screening. Manuscript in preparation.
 # 6/7/22 -- Neal Goldstein
 #################
 
