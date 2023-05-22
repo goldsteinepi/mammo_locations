@@ -195,7 +195,7 @@ moran.mc(map_proj_merged$BICOE_units, wt_list, nsim=1000)
 
 de_census = de_census[de_census$census_population>0, ]
 
-sum(de_census$census_population)
+sum(de_census$women_40_49) + sum(de_census$women_50_74) + sum(de_census$women_75_plus)
 sum(de_census$Mammo)
 sum(de_census$Mammo_units)
 sum(de_census$BICOE)
@@ -216,7 +216,7 @@ describe(de_census$BICOE_units)
 #NCC only
 ncc_census = de_census[which(de_census$Tract %in% ncc_ct$GEOID), ]
 
-sum(ncc_census$census_population)
+sum(ncc_census$women_40_49) + sum(ncc_census$women_50_74) + sum(ncc_census$women_75_plus)
 sum(ncc_census$Mammo)
 sum(ncc_census$Mammo_units)
 sum(ncc_census$BICOE)
@@ -237,7 +237,7 @@ describe(ncc_census$BICOE_units)
 #outside NCC
 kentsussex_census = de_census[which(!(de_census$Tract %in% ncc_ct$GEOID)), ]
 
-sum(kentsussex_census$census_population)
+sum(kentsussex_census$women_40_49) + sum(kentsussex_census$women_50_74) + sum(kentsussex_census$women_75_plus)
 sum(kentsussex_census$Mammo)
 sum(kentsussex_census$Mammo_units)
 sum(kentsussex_census$BICOE)
@@ -273,81 +273,81 @@ de_census$BICOE_YN = ifelse(de_census$BICOE>0, 1, 0)
 #summary(bicoe_glm)
 
 #number of sites
-mammo_sites = glm(Mammo ~ census_NDI + scale(women_40_49) + scale(women_50_74) + scale(women_75_plus) + scale(women_black_percent) + scale(percent_vehicle) + scale(busstops), offset=log(census_population), data=de_census, family=poisson())
-bicoe_sites = glm(BICOE ~ census_NDI + scale(women_40_49) + scale(women_50_74) + scale(women_75_plus) + scale(women_black_percent) + scale(percent_vehicle) + scale(busstops), offset=log(census_population), data=de_census, family=poisson())
+mammo_sites = glm(Mammo ~ census_NDI + scale(women_40_49) + scale(women_50_74) + scale(women_75_plus) + scale(women_black_percent) + scale(percent_vehicle) + scale(busstops), offset=log(women_40_49+women_50_74+women_75_plus), data=de_census, family=poisson())
+bicoe_sites = glm(BICOE ~ census_NDI + scale(women_40_49) + scale(women_50_74) + scale(women_75_plus) + scale(women_black_percent) + scale(percent_vehicle) + scale(busstops), offset=log(women_40_49+women_50_74+women_75_plus), data=de_census, family=poisson())
 
 summary(mammo_sites)
 summary(bicoe_sites)
 
 round(exp(coef(mammo_sites)),2)
-round(exp(coef(bicoe_sites)),2)
 round(exp(confint(mammo_sites)),2)
+round(exp(coef(bicoe_sites)),2)
 round(exp(confint(bicoe_sites)),2)
 
 #number of units
-mammo_units = glm(Mammo_units ~ census_NDI + scale(women_40_49) + scale(women_50_74) + scale(women_75_plus) + scale(women_black_percent) + scale(percent_vehicle) + scale(busstops), offset=log(census_population), data=de_census, family=poisson())
-bicoe_units = glm(BICOE_units ~ census_NDI + scale(women_40_49) + scale(women_50_74) + scale(women_75_plus) + scale(women_black_percent) + scale(percent_vehicle) + scale(busstops), offset=log(census_population), data=de_census, family=poisson())
+mammo_units = glm(Mammo_units ~ census_NDI + scale(women_40_49) + scale(women_50_74) + scale(women_75_plus) + scale(women_black_percent) + scale(percent_vehicle) + scale(busstops), offset=log(women_40_49+women_50_74+women_75_plus), data=de_census, family=poisson())
+bicoe_units = glm(BICOE_units ~ census_NDI + scale(women_40_49) + scale(women_50_74) + scale(women_75_plus) + scale(women_black_percent) + scale(percent_vehicle) + scale(busstops), offset=log(women_40_49+women_50_74+women_75_plus), data=de_census, family=poisson())
 
 summary(mammo_units)
 summary(bicoe_units)
 
 round(exp(coef(mammo_units)),2)
-round(exp(coef(bicoe_units)),2)
 round(exp(confint(mammo_units)),2)
+round(exp(coef(bicoe_units)),2)
 round(exp(confint(bicoe_units)),2)
 
 #NCC only
 ncc_census = de_census[which(de_census$Tract %in% ncc_ct$GEOID), ]
 
 #number of sites
-mammo_sites = glm(Mammo ~ census_NDI + scale(women_40_49) + scale(women_50_74) + scale(women_75_plus) + scale(women_black_percent) + scale(percent_vehicle) + scale(busstops), offset=log(census_population), data=ncc_census, family=poisson())
-bicoe_sites = glm(BICOE ~ census_NDI + scale(women_40_49) + scale(women_50_74) + scale(women_75_plus) + scale(women_black_percent) + scale(percent_vehicle) + scale(busstops), offset=log(census_population), data=ncc_census, family=poisson())
+mammo_sites = glm(Mammo ~ census_NDI + scale(women_40_49) + scale(women_50_74) + scale(women_75_plus) + scale(women_black_percent) + scale(percent_vehicle) + scale(busstops), offset=log(women_40_49+women_50_74+women_75_plus), data=ncc_census, family=poisson())
+bicoe_sites = glm(BICOE ~ census_NDI + scale(women_40_49) + scale(women_50_74) + scale(women_75_plus) + scale(women_black_percent) + scale(percent_vehicle) + scale(busstops), offset=log(women_40_49+women_50_74+women_75_plus), data=ncc_census, family=poisson())
 
 summary(mammo_sites)
 summary(bicoe_sites)
 
 round(exp(coef(mammo_sites)),2)
-round(exp(coef(bicoe_sites)),2)
 round(exp(confint(mammo_sites)),2)
+round(exp(coef(bicoe_sites)),2)
 round(exp(confint(bicoe_sites)),2)
 
 #number of units
-mammo_units = glm(Mammo_units ~ census_NDI + scale(women_40_49) + scale(women_50_74) + scale(women_75_plus) + scale(women_black_percent) + scale(percent_vehicle) + scale(busstops), offset=log(census_population), data=ncc_census, family=poisson())
-bicoe_units = glm(BICOE_units ~ census_NDI + scale(women_40_49) + scale(women_50_74) + scale(women_75_plus) + scale(women_black_percent) + scale(percent_vehicle) + scale(busstops), offset=log(census_population), data=ncc_census, family=poisson())
+mammo_units = glm(Mammo_units ~ census_NDI + scale(women_40_49) + scale(women_50_74) + scale(women_75_plus) + scale(women_black_percent) + scale(percent_vehicle) + scale(busstops), offset=log(women_40_49+women_50_74+women_75_plus), data=ncc_census, family=poisson())
+bicoe_units = glm(BICOE_units ~ census_NDI + scale(women_40_49) + scale(women_50_74) + scale(women_75_plus) + scale(women_black_percent) + scale(percent_vehicle) + scale(busstops), offset=log(women_40_49+women_50_74+women_75_plus), data=ncc_census, family=poisson())
 
 summary(mammo_units)
 summary(bicoe_units)
 
 round(exp(coef(mammo_units)),2)
-round(exp(coef(bicoe_units)),2)
 round(exp(confint(mammo_units)),2)
+round(exp(coef(bicoe_units)),2)
 round(exp(confint(bicoe_units)),2)
 
 #outside NCC
 kentsussex_census = de_census[which(!(de_census$Tract %in% ncc_ct$GEOID)), ]
 
 #number of sites
-mammo_sites = glm(Mammo ~ census_NDI + scale(women_40_49) + scale(women_50_74) + scale(women_75_plus) + scale(women_black_percent) + scale(percent_vehicle) + scale(busstops), offset=log(census_population), data=kentsussex_census, family=poisson())
-#bicoe_sites = zeroinfl(BICOE ~ census_NDI + scale(women_40_49) + scale(women_50_74) + scale(women_75_plus) + scale(women_black_percent) + scale(AlcOffsite) + scale(busstops), offset=log(census_population), data=kentsussex_census, family="poisson")
-#bicoe_sites = zeroinfl(BICOE ~ census_NDI + scale(women_40_49) + scale(women_50_74) + scale(women_75_plus) + scale(women_black_percent) + scale(AlcOffsite) + scale(busstops), offset=log(census_population), data=kentsussex_census, family="negbin")
+mammo_sites = glm(Mammo ~ census_NDI + scale(women_40_49) + scale(women_50_74) + scale(women_75_plus) + scale(women_black_percent) + scale(percent_vehicle) + scale(busstops), offset=log(women_40_49+women_50_74+women_75_plus), data=kentsussex_census, family=poisson())
+#bicoe_sites = zeroinfl(BICOE ~ census_NDI + scale(women_40_49) + scale(women_50_74) + scale(women_75_plus) + scale(women_black_percent) + scale(AlcOffsite) + scale(busstops), offset=log(women_40_49+women_50_74+women_75_plus), data=kentsussex_census, family="poisson")
+#bicoe_sites = zeroinfl(BICOE ~ census_NDI + scale(women_40_49) + scale(women_50_74) + scale(women_75_plus) + scale(women_black_percent) + scale(AlcOffsite) + scale(busstops), offset=log(women_40_49+women_50_74+women_75_plus), data=kentsussex_census, family="negbin")
 
 summary(mammo_sites)
-summary(bicoe_sites)
+#summary(bicoe_sites)
 
 round(exp(coef(mammo_sites)),2)
-round(exp(coef(bicoe_sites)),2)
 round(exp(confint(mammo_sites)),2)
-round(exp(confint(bicoe_sites)),2)
+#round(exp(coef(bicoe_sites)),2)
+#round(exp(confint(bicoe_sites)),2)
 
 #number of units
-mammo_units = glm(Mammo_units ~ census_NDI + scale(women_40_49) + scale(women_50_74) + scale(women_75_plus) + scale(women_black_percent) + scale(percent_vehicle) + scale(busstops), offset=log(census_population), data=kentsussex_census, family=poisson())
-#bicoe_units = zeroinfl(BICOE_units ~ census_NDI + scale(women_40_49) + scale(women_50_74) + scale(women_75_plus) + scale(women_black_percent) + scale(AlcOffsite) + scale(busstops), offset=log(census_population), data=kentsussex_census, family="poisson")
-#bicoe_units = zeroinfl(BICOE_units ~ census_NDI + scale(women_40_49) + scale(women_50_74) + scale(women_75_plus) + scale(women_black_percent) + scale(AlcOffsite) + scale(busstops), offset=log(census_population), data=kentsussex_census, family="negbin")
+mammo_units = glm(Mammo_units ~ census_NDI + scale(women_40_49) + scale(women_50_74) + scale(women_75_plus) + scale(women_black_percent) + scale(percent_vehicle) + scale(busstops), offset=log(women_40_49+women_50_74+women_75_plus), data=kentsussex_census, family=poisson())
+#bicoe_units = zeroinfl(BICOE_units ~ census_NDI + scale(women_40_49) + scale(women_50_74) + scale(women_75_plus) + scale(women_black_percent) + scale(AlcOffsite) + scale(busstops), offset=log(women_40_49+women_50_74+women_75_plus), data=kentsussex_census, family="poisson")
+#bicoe_units = zeroinfl(BICOE_units ~ census_NDI + scale(women_40_49) + scale(women_50_74) + scale(women_75_plus) + scale(women_black_percent) + scale(AlcOffsite) + scale(busstops), offset=log(women_40_49+women_50_74+women_75_plus), data=kentsussex_census, family="negbin")
 
 summary(mammo_units)
-summary(bicoe_units)
+#summary(bicoe_units)
 
 round(exp(coef(mammo_units)),2)
-round(exp(coef(bicoe_units)),2)
 round(exp(confint(mammo_units)),2)
-round(exp(confint(bicoe_units)),2)
+#round(exp(coef(bicoe_units)),2)
+#round(exp(confint(bicoe_units)),2)
